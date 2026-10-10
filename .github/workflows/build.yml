@@ -1,0 +1,20 @@
+name: Build EXE
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyinstaller psutil
+      - run: pyinstaller --onefile pc_monitor.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pc_monitor-exe
+          path: dist/pc_monitor.exe
